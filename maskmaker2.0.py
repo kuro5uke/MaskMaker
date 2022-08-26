@@ -1,5 +1,6 @@
 import string
-import cleancombo2
+import cleancombo22
+
 print("""\n
 oooo     oooo      o       oooooooo8 oooo   oooo              
  8888o   888      888     888         888  o88                
@@ -38,40 +39,58 @@ def string_to_mask(s):
             
         #*** WRITTEN WITH HASHCAT MASK RULES IN MIND - CHNAGE TO FIT YOUR PASSWORD CRACKER ***
 
-    return result #return mask (as a list) when function is called
+    return result # return mask (as a list) when function is called
 
 
-#Call to clean combo function
-file = cleancombo2.combolist()
+def email_counter():
+    counter = {}
 
-with open(cleancombo2.cleanpass(file)) as passwords_list:
-          
+    for email in emails:
+
+        if email in counter:
+            counter[email] += 1
+        else:
+            counter[email] = 1
+
+def mask_counter():
+    counter = {}
+
+    for mask in masks:
+
+        if mask in counter:
+            counter[mask] += 1
+        else:
+            counter[mask] = 1
+    
+
+file = cleancombo22.combopath() # Call to clean combo function
+
+with open(cleancombo22.cleanpass(file)) as passwords_list:
+
           passwords = passwords_list.readlines()
  
-          masks = [] #Create empty list for hashcat masks
+          masks = [] # Create empty list for hashcat masks
           
           for password in passwords:
-              mask = ''.join(string_to_mask(password)) #Convert function return value (mask as list) to string
+              mask = ''.join(string_to_mask(password)) # Convert function return value (mask as list) to string
 
-              masks.append(mask) #Add mask to list
+              masks.append(mask) # Add mask to list
 
-#Initialize dictionary
-counter = {}
+counter = {} # Write masks and count to dictionary with for loop
 
-#Write masks and count to dictionary with for loop
 for mask in masks:
     
     if mask in counter:
-        counter[mask] += 1
+        counter[mask] += 1 # Write masks and count to dictionary with for loop
 
     else:
         counter[mask] = 1
 
-counter_list = sorted(counter.items(), key=lambda x:x[1], reverse=True)   #Convert dictionary to list
+counter_list = sorted(counter.items(), key=lambda x:x[1], reverse=True)   # Convert dictionary to list
 
-sort_counter = dict(counter_list)   #Sort values
+sort_counter = dict(counter_list)   # Sort values
 
-with open('maskcount.txt', 'w') as data: #Overwrites last maskcount
+with open('maskcount.txt', 'w') as data: # Overwrites last maskcount
     
     for k, v in sort_counter.items():
         key_pairs = k + ": " + str(v) + "\n"
@@ -79,10 +98,11 @@ with open('maskcount.txt', 'w') as data: #Overwrites last maskcount
         data.write(key_pairs)
 
 
-#References
-#https://www.geeksforgeeks.org/python-program-to-check-a-string-for-specific-characters/
-#https://www.simplilearn.com/tutorials/python-tutorial/list-to-string-in-python
-#https://datagy.io/python-count-occurrences-in-list/
-#https://www.geeksforgeeks.org/write-a-dictionary-to-a-file-in-python/
-#https://www.tutorialsteacher.com/articles/sort-dict-by-value-in-python
-#https://stackoverflow.com/questions/30677334/how-to-save-a-dictionary-to-a-file-with-key-values-one-per-line
+decision = str(input("\nCreate an email file?\n [y/N]: \n"))
+
+if decision == 'y' or decision == 'Y':
+    usernames = cleancombo22.cleanuser(file)
+    print(usernames)
+    
+else:
+    print("\nThank You")
