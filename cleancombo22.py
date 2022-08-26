@@ -1,5 +1,5 @@
 def banner():
-    print(
+        print(
 """\n
  ▄████████  ▄█          ▄████████    ▄████████ ███▄▄▄▄        
 ███    ███ ███         ███    ███   ███    ███ ███▀▀▀██▄      
@@ -9,7 +9,7 @@ def banner():
 ███    █▄  ███         ███    █▄    ███    ███ ███   ███      
 ███    ███ ███▌    ▄   ███    ███   ███    ███ ███   ███      
 ████████▀  █████▄▄██   ██████████   ███    █▀   ▀█   █▀       
-           ▀                                                  
+                   ▀                                                  
  ▄████████  ▄██████▄    ▄▄▄▄███▄▄▄▄   ▀█████████▄   ▄██████▄  
 ███    ███ ███    ███ ▄██▀▀▀███▀▀▀██▄   ███    ███ ███    ███ 
 ███    █▀  ███    ███ ███   ███   ███   ███    ███ ███    ███ 
@@ -18,86 +18,88 @@ def banner():
 ███    █▄  ███    ███ ███   ███   ███   ███    ██▄ ███    ███ 
 ███    ███ ███    ███ ███   ███   ███   ███    ███ ███    ███ 
 ████████▀   ▀██████▀   ▀█   ███   █▀  ▄█████████▀   ▀██████▀  
-                                                              
+                                                                                                                          
 
 A simple script for turning combolists into email or password lists.
 By civilkmkz
 \n
 """)
 
-def combolist():
-    #Combolist used as argument for functions
-    filename = input("Please specify combolist file path:")
-    return filename
+# FUNCTION RETURNS COMBOLIST'S FILE PATH WHEN CALLED.
 
-#CLEAN PASSWORDS FUNCTION
+def combopath():
+        filepath = input("\nPlease specify existing combolist's file path:")
+        return filepath
+
+def strip_option(cleanlist):
+
+                x = int(input("\n List Options:\nPress 0 - Use entire list.\nPress 1 - Specify a range.\n"))
+                
+                if x == 1:
+                                startoff = int(input("\nWhich line to start at?:(0 for first line)"))
+                                print("\nStarting at " + cleanlist[startoff])
+                                cutoff = int(input("\nWhich line to stop at?:"))
+                                print("\nStopping at" + cleanlist[cutoff])
+                                
+                                shortlist = cleanlist[startoff:cutoff]
+                                
+                else:
+                                shortlist = cleanlist
+                
+                return shortlist
+                
+# FUNCTION RETURNS A FILE CONTAINING STRIPPED PASSWORDS
+
 def cleanpass(combolist):
 
-    newfilename = input("\nName for new password list (with extension - ie: .txt)?: ") #Prompts user for input
-    
+    passwordfile = input("\nName (your) new password list:")
+
     with open(combolist) as f:
         lines = f.readlines()
 
-        passwords = []
+    passwords = [] # initialize empty list for passwords
 
     for line in lines:
-        password = line.split(":")[1]
-        passwords.append(password)
+        password = line.split(":")[1] # set password variable to index 1
+        passwords.append(password) # write each password to passwords list
 
-    print ("\nTotal number of combos = " + str((len(passwords))))
+    print ("\nTotal number of passwords = " + str((len(passwords))))
 
-    newfile = open(newfilename, 'w')
-
-    startoff = int(input("\nWhich combo to start at?: (0 for first combo) "))
-    print("\nStarting at " + passwords[startoff])
-    cutoff  = int(input("\nWhich combo to stop at?: "))
-    print("\nStopping at" + passwords[cutoff])
-
-    #For password in list "up to" (:)cutoff [:cutoff]
-    shortlist = passwords[startoff:cutoff]
-    print(shortlist)
-    print()
+    newfile = open(passwordfile, 'w') # open user-defined "passwordfile" in write mode
+    shortlist = strip_option(passwords) # set shortlist to strip_option return value
 
     for word in shortlist:
         newfile.write(word)
         print(word)
 
     newfile.close
-    newfile = open(newfilename, 'r')
-    return newfilename
-    
-#CLEAN USERNAMES FUNCTION
+    newfile = open(passwordfile, 'r')
+    return passwordfile
+
+#FUNCTION RETURNS A FILE CONTAINING STRIPPED USERNAMES
+
 def cleanuser(combolist):
 
-    newfilename = input("\nName for new e-mail/username list (with extension - ie: .txt)?: ") #Prompts user for input
-
+    usernamefile = input("\nName for new e-mail/username list (with extension - ie: .txt)?: ") #Prompts user for input
+    
     with open(combolist) as f:
         lines = f.readlines()
 
-        usernames = []
+    usernames = [] # initialize empty list for usernames
 
     for line in lines:
-        username = line.split(":")[0]
-        usernames.append(username)
+        username = line.split(":")[0] # set user variable to index 0
+        usernames.append(username) # write each user to passwords list
 
-    print ("\nTotal number of combos = " + str((len(usernames))))
+    print ("\nTotal number of usernames = " + str((len(usernames))))
 
-    newfile = open(newfilename, 'w')
-
-    startoff = int(input("\nWhich combo to start at?: (0 for first combo) "))
-    print("\nStarting at " + usernames[startoff])
-    cutoff  = int(input("\nWhich combo to stop at?: "))
-    print("\nStopping at" + usernames[cutoff])
-
-    #For username in list "up to" (:)cutoff [:cutoff]
-    shortlist = usernames[startoff:cutoff]
-    print(shortlist)
-    print()
+    newfile = open(usernamefile, 'w') # open user-defined "passwordfile" in write mode
+    shortlist = strip_option(usernames) # set shortlist to strip_option return value
 
     for user in shortlist:
         newfile.write(user+"\n")
         print(user)
 
     newfile.close
-    newfile = open(newfilename, 'r')
-    return newfilename
+    newfile = open(usernamefile, 'r')
+    return usernamefile
